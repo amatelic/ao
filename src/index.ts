@@ -26,6 +26,13 @@ type OllamaSchemaParams = z.infer<typeof ollamaSchema>;
 // ollam
 const url = "http://localhost:11434/";
 
+export interface ToolCalls {
+  tools: Tool[];
+  exec: {
+    [toolName: string]: (args: any) => Promise<string>;
+  };
+}
+
 export type PromptFunction = (
   literals: TemplateStringsArray,
   ...placeholders: any[]
@@ -125,13 +132,6 @@ export async function oa(args: OllamaSchemaParams) {
   // change to function but add new functionality
   function prompt(prompt: string): Prompt {
     return new Prompt(prompt);
-  }
-
-  interface ToolCalls {
-    tools: Tool[];
-    exec: {
-      [toolName: string]: (args: any) => Promise<string>;
-    };
   }
 
   type ToolType = (promptString: any) => Promise<ChatResponse>;
