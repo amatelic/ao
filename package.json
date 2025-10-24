@@ -1,0 +1,29 @@
+{
+  "name": "ao",
+  "version": "0.0.1",
+  "description": "Basic libary for creating llm agents",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest --watch"
+  },
+  "keywords": [
+    "ai",
+    "ollama"
+  ],
+  "author": "Anže Matelič",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.8.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "envdot": "^0.0.3",
+    "ollama": "^0.6.0",
+    "zod": "^4.1.12"
+  }
+}
