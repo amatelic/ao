@@ -62,6 +62,7 @@ describe("Make basi ai example", () => {
   test("create basic prompt (streaming)", async () => {
     const { prompt } = await oa({
       ...config,
+      stream: true,
     });
 
     const whatIs2by2 = await prompt(
@@ -87,13 +88,5 @@ describe("Make basi ai example", () => {
     ).call();
 
     expect(whatIs2by2.message.content).toBe("4");
-  });
-
-  test("task prompt", async () => {
-    const { prompt, tool } = await oa({
-      ...config,
-      stream: false,
-    });
-    expect(response.message.content).toBe("4");
   });
 });

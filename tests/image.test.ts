@@ -7,7 +7,7 @@ import { oa } from "../src";
 // there is posibility to select multiple options
 describe("Check for image support", () => {
   test("Can read invoice data", async () => {
-    const { router, prompt } = await oa({
+    const { prompt } = await oa({
       model: "qwen2.5vl:3b",
       stream: false,
     });
@@ -23,8 +23,6 @@ describe("Check for image support", () => {
     ).addImage(file);
 
     const response = await readTheInvoice.call();
-
-    console.log(response.message.content);
 
     // only check if the response return correct invoice number
     expect(response.message.content).includes("51109338");
