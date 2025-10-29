@@ -5,7 +5,7 @@ Libary for easier construction of LLM prompts with ollama.
 Basic example:
 
 ```js
-import { prompt } from "ao";
+import { oa } from "@amatelic/oa";
 
 
 async function main() {
