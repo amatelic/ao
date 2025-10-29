@@ -73,14 +73,14 @@ export const tool = (
   };
 };
 
-export const router = (prompts: PromptInstance[]) => {
+export const routerPrompts = (prompts: PromptInstance[]) => {
   const generateText = prompts
     .map((prompt) => {
       return `prompt-id: ${prompt.promptId}. Prompt description: ${prompt.prompt}`;
     })
     .join("\n");
 
-  const command = `
+  return `
     You are an routing service bot. Your task is to select the correct propt-id to execute. All avaialable propts ids are defined below. Your job is to select all the propts which are required from you from the user :\n
     All available prompts ids with the prompt description are provided here:\n
 
@@ -91,13 +91,10 @@ export const router = (prompts: PromptInstance[]) => {
 
     Example of output can be seen below:\n
     none
-    prompt-1
-    prompt-1,prompt-2
-    prompt-1,prompt-3,prompt-2
-    prompt-1,prompt-4,prompt-2,prompt-3
+    prompt-e8bf6409-6883-419e-859b-b28634c9f826
+    prompt-e8bf6409-6883-419e-859b-b28634c9f826,prompt-e8bf6409-6843-419e-859b-b28634c9f811
+    prompt-e8bf6409-6883-419e-859b-b28634c9f826,prompt-e8bf6409-6843-419e-859b-b28634c9f811,prompt-e8bf6409-6883-419e-859b-b28634c9f4ca
+    prompt-e8bf6409-6883-419e-859b-b28634c9f826,prompt-e8bf6409-6843-419e-859b-b28634c9f811,prompt-e8bf6409-6883-419e-859b-b28634c9f4ca,prompt-e8bf6409-6883-33a1-859b-b28634c9f826
     ### Here is the user examples:\n
   `;
-  return (toolPrompt: PromptInstance) => {
-    return prompt(`${command} <<<${userPrompt}>>>`).call();
-  };
 };

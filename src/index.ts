@@ -6,7 +6,7 @@ import {
   PromptInstance,
   ToolCalls,
 } from "./types";
-import { router, tool } from "./utils";
+import { routerPrompts, tool } from "./utils";
 
 export async function oa<T extends OllamaSchemaParams>(args: T) {
   const config = await OllamaOptionsSchema.parseAsync(args);
@@ -51,9 +51,27 @@ export async function oa<T extends OllamaSchemaParams>(args: T) {
       // Merge the base config with custom config
       const mergedConfig = {
         ...config,
+        stream: false,
       } as T & U;
 
-      return (value: string)> router(router)(prompt);
+      return async (userPrompt: string): Promise<PromptInstance[]> => {
+        const instructions = routerPrompts(routes);
+        const response = await prompt(
+          `${instructions} <<<${userPrompt}>>>`,
+          mergedConfig,
+        ).call();
+
+        const tasksIds = response.message.content
+          .split(",")
+          .reduce(
+            (acc, item) => ({ ...acc, [item]: true }),
+            {} as Record<string, boolean>,
+          );
+
+        return routes.filter((r) => {
+          return tasksIds[r.promptId] || false;
+        });
+      };
     },
     config: { ...config },
   };
