@@ -4,12 +4,15 @@ import {
   OllamaOptionsSchema,
   OllamaSchemaParams,
 } from "./types";
+import * as z from "zod";
+import { $ZodType, JSONSchema } from "zod/v4/core";
 
 export class Prompt<T extends { stream?: boolean; model: string }> {
   id: string;
   prompt: string;
   config: T;
   images: (string | Buffer)[];
+  schema?: JSONSchema.BaseSchema;
 
   constructor(prompt: string, config: T) {
     this.prompt = prompt;
@@ -37,6 +40,7 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
     const configMessage: ChatRequest = {
       ...this.config,
       stream: this.config.stream ?? false,
+      format: this.schema,
       messages: [
         {
           role: "user",
@@ -63,6 +67,10 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
   }
   get promptId(): string {
     return `prompt-${this.id}`;
+  }
+  format(schema: $ZodType) {
+    this.schema = z.toJSONSchema(schema);
+    return this;
   }
 }
 
