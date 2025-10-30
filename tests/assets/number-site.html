@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>246</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+                font-family: "Arial", sans-serif;
+                overflow: hidden;
+            }
+
+            .container {
+                display: flex;
+                gap: 50px;
+                animation: float 3s ease-in-out infinite;
+            }
+
+            .number {
+                font-size: 8rem;
+                font-weight: bold;
+                color: white;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+                transition: transform 0.3s ease;
+            }
+
+            .number:nth-child(1) {
+                animation: pulse 2s ease-in-out infinite;
+            }
+
+            .number:nth-child(2) {
+                animation: pulse 2s ease-in-out infinite 0.3s;
+            }
+
+            .number:nth-child(3) {
+                animation: pulse 2s ease-in-out infinite 0.6s;
+            }
+
+            .number:hover {
+                transform: scale(1.2);
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 0.7;
+                }
+                50% {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-20px);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    gap: 30px;
+                }
+                .number {
+                    font-size: 4rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <span class="number">2</span>
+            <span class="number">4</span>
+            <span class="number">6</span>
+        </div>
+
+        <script>
+            // Add some interactive behavior
+            document.addEventListener("click", function (e) {
+                const numbers = document.querySelectorAll(".number");
+
+                if (e.target.classList.contains("number")) {
+                    // Random color change on click
+                    const colors = [
+                        "#ff6b6b",
+                        "#4ecdc4",
+                        "#45b7d1",
+                        "#96ceb4",
+                        "#feca57",
+                        "#ff9ff3",
+                    ];
+                    const randomColor =
+                        colors[Math.floor(Math.random() * colors.length)];
+                    e.target.style.color = randomColor;
+                }
+            });
+
+            // Periodic color cycling
+            setInterval(function () {
+                const numbers = document.querySelectorAll(".number");
+                numbers.forEach((number) => {
+                    const hue = Math.random() * 360;
+                    number.style.color = `hsl(${hue}, 70%, 80%)`;
+                });
+            }, 3000);
+        </script>
+    </body>
+</html>

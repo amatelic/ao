@@ -13,6 +13,7 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
   config: T;
   images: (string | Buffer)[];
   schema?: JSONSchema.BaseSchema;
+  source?: string;
 
   constructor(prompt: string, config: T) {
     this.prompt = prompt;
@@ -35,13 +36,19 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
     }
     return this;
   }
+  addSource(source: string) {
+    this.source = source;
+    return this;
+  }
   // })
   async call(): Promise<ChatReturnType<T>> {
+    const message = this.source ? [{ role: "user", content: this.source }] : [];
     const configMessage: ChatRequest = {
       ...this.config,
       stream: this.config.stream ?? false,
       format: this.schema,
       messages: [
+        ...message,
         {
           role: "user",
           content: this.prompt,

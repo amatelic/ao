@@ -98,3 +98,16 @@ export const routerPrompts = (prompts: PromptInstance[]) => {
     ### Here is the user examples:\n
   `;
 };
+
+export const pipe = async (
+  source: Promise<string>,
+  prompts: PromptInstance[],
+) => {
+  let data = await source;
+  while (prompts.length) {
+    const prompt = prompts.shift();
+    const response = await prompt?.addSource(data).call();
+    data = response?.message.content || "";
+    return response;
+  }
+};

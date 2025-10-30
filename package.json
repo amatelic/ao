@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "envdot": "^0.0.3",
+    "html-to-text": "^9.0.5",
     "ollama": "^0.6.0",
     "zod": "^4.1.12"
   }
