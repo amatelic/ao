@@ -33,4 +33,29 @@ describe("Check case for prompts", () => {
 
     expect(promptConfig.message.content).contains("Yes");
   });
+
+  test("Promprot stops working on codition", async () => {
+    const { prompt, config } = await oa({
+      ...globalonfig,
+      stream: false,
+    });
+
+    const wihtouStopFunction = await prompt(
+      "Count from 1 to 10 in one line whitout any other content",
+    ).call();
+
+    console.log(wihtouStopFunction.message.content);
+
+    expect(wihtouStopFunction.message.content).contains("1 2 3 4 5 6 7 8 9 10");
+
+    const withStopFunction = await prompt(
+      "Count from 1 to 10 in one line whitout any other content",
+    )
+      .addStop("6")
+      .call();
+
+    console.log(withStopFunction.message.content);
+
+    expect(withStopFunction.message.content).contains("1 2 3 4 5");
+  });
 });

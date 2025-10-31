@@ -14,12 +14,14 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
   images: (string | Buffer)[];
   schema?: JSONSchema.BaseSchema;
   source?: string;
+  stop: string[];
 
   constructor(prompt: string, config: T) {
     this.prompt = prompt;
     this.config = config;
     this.id = crypto.randomUUID();
     this.images = [];
+    this.stop = [];
   }
 
   setConfig(config: Partial<OllamaSchemaParams>, merge = false) {
@@ -40,11 +42,21 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
     this.source = source;
     return this;
   }
+  addStop(stop: string) {
+    if (stop) {
+      this.stop.push(stop);
+    }
+    return this;
+  }
   // })
   async call(): Promise<ChatReturnType<T>> {
     const message = this.source ? [{ role: "user", content: this.source }] : [];
+
+    let config = Object.assign({}, this.config, {
+      options: { stop: this.stop },
+    });
     const configMessage: ChatRequest = {
-      ...this.config,
+      ...config,
       stream: this.config.stream ?? false,
       format: this.schema,
       messages: [
