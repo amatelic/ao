@@ -99,15 +99,25 @@ export const routerPrompts = (prompts: PromptInstance[]) => {
   `;
 };
 
+export type sourceTypes = "text" | "image" | "video";
+
 export const pipe = async (
-  source: Promise<string>,
+  source: Promise<{ data: string; type: sourceTypes }>,
   prompts: PromptInstance[],
 ) => {
-  let data = await source;
+  let sourceValue = await source;
   while (prompts.length) {
     const prompt = prompts.shift();
-    const response = await prompt?.addSource(data).call();
-    data = response?.message.content || "";
+    let response: any;
+    if (sourceValue.type === "text") {
+      response = await prompt?.addSource(sourceValue.data).call();
+    } else if (sourceValue.type === "image") {
+      response = await prompt?.addImage(sourceValue.data).call();
+    } else if (sourceValue.type === "video") {
+      throw new Error("test");
+    }
+
+    sourceValue = response?.message.content || "";
     return response;
   }
 };

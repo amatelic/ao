@@ -7,10 +7,11 @@ import {
   beforeEach,
   vi,
 } from "vitest";
-import { web } from "../src/source";
+import { web, csv } from "../src/source";
 import { pipe } from "../src/utils";
 import { oa } from "../src/index";
 import fs from "fs/promises";
+import * as z from "zod";
 
 describe("Check if sources are working", () => {
   beforeEach(() => {
@@ -57,16 +58,41 @@ describe("Check if sources are working", () => {
     });
 
     // we send the file because we can't mock the fetch
-    const data = await pipe(Promise.resolve(file), [
-      prompt(
-        "Extract all numbers and sum them up. Give only the final sum without an explanation.",
-      ),
-    ]);
+    const data = await pipe(
+      Promise.resolve({
+        data: file,
+        type: "text",
+      }),
+      [
+        prompt(
+          "Extract all numbers and sum them up. Give only the final sum without an explanation.",
+        ),
+      ],
+    );
 
     expect(data?.message.content).toBe("12");
   });
+  test("Check that the pipe sourcing works correctly", async () => {
+    const { prompt } = await oa({
+      model: "qwen2.5-coder:7b",
+      stream: false,
+    });
 
-  // const siteContent = await web(url).pipe((content) => content.toUpperCase());
-  // console.log(siteContent);
-  // expect(siteContent).toEqual(`${data.title.toUpperCase()}\n\n${data.description.toUpperCase()}`);
+    const result = JSON.stringify({
+      volume: [153.23, 98.45],
+    });
+
+    const schema = z.object({
+      volume: z.array(z.number()).describe("Collection of volume data"),
+    });
+
+    // we send the file because we can't mock the fetch
+    const data = await pipe(csv(`${process.cwd()}/tests/assets/ticker.csv`), [
+      prompt("Get the volumne of the tickers. Give me the data in json").format(
+        schema,
+      ),
+    ]);
+    const parseData = JSON.stringify(JSON.parse(data?.message.content));
+    expect(parseData).toEqual(result);
+  });
 });
