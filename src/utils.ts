@@ -13,7 +13,7 @@ import {
   PromptInstance,
   ToolCalls,
   ToolType,
-} from "./types";
+} from "./types/types";
 import { Prompt, prompt } from "./prompt";
 
 export const tool = (
@@ -101,8 +101,13 @@ export const routerPrompts = (prompts: PromptInstance[]) => {
 
 export type sourceTypes = "text" | "image" | "video";
 
+export type SourceResult = {
+  type: sourceTypes;
+  data: string;
+};
+
 export const pipe = async (
-  source: Promise<{ data: string; type: sourceTypes }>,
+  source: Promise<SourceResult>,
   prompts: PromptInstance[],
 ) => {
   let sourceValue = await source;

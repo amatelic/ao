@@ -5,7 +5,7 @@ import { oa } from "../src";
 describe("Check if formating is working", () => {
   test("Can read invoice data", async () => {
     const { prompt } = await oa({
-      model: "magistral:latest",
+      model: "magistral",
       stream: false,
     });
 

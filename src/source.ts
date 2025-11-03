@@ -1,11 +1,6 @@
 import { htmlToText } from "html-to-text";
 import { CsvParser } from "./helpers/csv-parser";
-import { sourceTypes } from "./utils";
-
-type SourceResult = {
-  type: sourceTypes;
-  data: string;
-};
+import { SourceResult } from "./utils";
 
 export const web = async (
   url: string,

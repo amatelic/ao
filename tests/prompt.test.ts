@@ -4,14 +4,14 @@ import { oa } from "../src";
 import { ChatRequest } from "ollama";
 
 const globalonfig = {
-  model: "qwen2.5-coder:7b",
+  model: "qwen2.5-coder",
   stream: true,
 };
 
 describe("Check case for prompts", () => {
   test("task prompt", async () => {
     const { prompt, config } = await oa({
-      ...globalonfig,
+      model: "qwen2.5-coder:3b",
       stream: false,
     });
 
@@ -36,7 +36,7 @@ describe("Check case for prompts", () => {
 
   test("Promprot stops working on codition", async () => {
     const { prompt, config } = await oa({
-      ...globalonfig,
+      model: "qwen2.5-coder:3b",
       stream: false,
     });
 

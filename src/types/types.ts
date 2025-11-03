@@ -1,19 +1,20 @@
 import { AbortableAsyncIterator, ChatResponse, Tool } from "ollama";
 import z from "zod";
-import { Prompt } from "./prompt";
+import { Prompt } from "../prompt";
+import { ollama_models } from "./models";
 
 export const ollamUrl = "http://localhost:11434/";
 
 export const ollamaStreamSchema = z.object({
   url: z.url().default(ollamUrl).optional(),
-  model: z.string(),
+  model: z.enum(ollama_models),
   stream: z.literal(true),
   tools: z.array(z.any()).optional(),
 });
 
 export const ollamaSchema = z.object({
   url: z.url().default(ollamUrl).optional(),
-  model: z.string(),
+  model: z.enum(ollama_models),
   stream: z.literal(false),
   tools: z.array(z.any()).optional(),
 });

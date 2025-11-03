@@ -5,7 +5,7 @@ import {
   OllamaSchemaParams,
   PromptInstance,
   ToolCalls,
-} from "./types";
+} from "./types/types";
 import { routerPrompts, tool } from "./utils";
 
 export async function oa<T extends OllamaSchemaParams>(args: T) {
