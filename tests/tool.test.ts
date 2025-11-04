@@ -1,5 +1,4 @@
 import { expect, test, describe, afterEach, assert } from "vitest";
-import { createServer } from "node:http";
 
 import { oa } from "../src";
 
@@ -12,7 +11,10 @@ describe("Check that tool commands are working", () => {
   test("Calls the weather tool", async () => {
     const { tool, prompt } = await oa({
       ...config,
-      model: "qwen3:4b",
+      model: "devstral",
+      // using wrong format
+      // model: "qwen2.5-coder:7b",
+
       stream: false,
     });
 

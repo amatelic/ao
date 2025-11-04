@@ -10,6 +10,7 @@ export const ollamaStreamSchema = z.object({
   model: z.enum(ollama_models),
   stream: z.literal(true),
   tools: z.array(z.any()).optional(),
+  options: z.any().optional(),
 });
 
 export const ollamaSchema = z.object({
@@ -17,6 +18,7 @@ export const ollamaSchema = z.object({
   model: z.enum(ollama_models),
   stream: z.literal(false),
   tools: z.array(z.any()).optional(),
+  options: z.any().optional(),
 });
 
 export const OllamaOptionsSchema = z.union([ollamaStreamSchema, ollamaSchema]);

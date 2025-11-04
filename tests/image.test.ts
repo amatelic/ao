@@ -8,7 +8,7 @@ import { oa } from "../src";
 describe("Check for image support", () => {
   test("Can read invoice data", async () => {
     const { prompt } = await oa({
-      model: "qwen2.5-coder:3b",
+      model: "qwen2.5-coder:7b",
       stream: false,
     });
 

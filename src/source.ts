@@ -1,6 +1,7 @@
 import { htmlToText } from "html-to-text";
 import { CsvParser } from "./helpers/csv-parser";
 import { SourceResult } from "./utils";
+import { PromptInstance } from "./types/types";
 
 export const web = async (
   url: string,
@@ -42,3 +43,13 @@ export const csv = async (path: string): Promise<SourceResult> => {
     data: `Here you have a csv file with the below content\n ${results.join("\n")}`,
   };
 };
+
+export async function generateText(
+  prompt: PromptInstance,
+): Promise<SourceResult> {
+  const response = await prompt.call();
+  return {
+    type: "text",
+    data: response.message.content,
+  };
+}

@@ -38,6 +38,7 @@ export const ollama_models = [
   "gemma2:9b",
   "gemma2:27b",
   "gemma2:2b",
+  "qwen2.5vl:3b",
   "qwen2.5-coder:0.5b",
   "qwen2.5-coder:1.5b",
   "qwen2.5-coder:3b",

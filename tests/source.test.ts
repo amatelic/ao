@@ -43,7 +43,7 @@ describe("Check if sources are working", () => {
     (fetch as vi.MockedFunction<typeof fetch>).mockResolvedValue(mockResponse);
     const url = "https://example.com";
     const siteContent = await web(url);
-    expect(siteContent).toEqual(`${data.title}\n\n${data.description}`);
+    expect(siteContent.data).toEqual(`${data.title}\n\n${data.description}`);
   });
 
   test("Check that the pipe sourcing works correctly", async () => {

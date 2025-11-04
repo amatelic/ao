@@ -3,7 +3,7 @@ import {
   ChatReturnType,
   OllamaOptionsSchema,
   OllamaSchemaParams,
-} from "./types";
+} from "./types/types";
 import * as z from "zod";
 import { $ZodType, JSONSchema } from "zod/v4/core";
 
@@ -12,9 +12,9 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
   prompt: string;
   config: T;
   images: (string | Buffer)[];
-  schema?: JSONSchema.BaseSchema;
-  source?: string;
-  stop: string[];
+  private schema?: JSONSchema.BaseSchema;
+  private source?: string;
+  private stop: string[];
 
   constructor(prompt: string, config: T) {
     this.prompt = prompt;
