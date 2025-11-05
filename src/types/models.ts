@@ -19,6 +19,8 @@ export const ollama_models = [
   "devstral",
   "mistral",
   "mistral:7b",
+  "mistral-small3.1",
+  "mistral-small3.2",
   "mistral:instruct",
   "mistral:latest",
   "mixtral",
@@ -115,6 +117,9 @@ export const ollama_models = [
   "stable-beluga:7b",
   "stable-beluga:13b",
   "ultralytics/ultralytics",
+
+
+  "gemma3",
 
   // Small/Efficient Models
   "tinyllama",

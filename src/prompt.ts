@@ -12,6 +12,7 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
   prompt: string;
   config: T;
   images: (string | Buffer)[];
+  private _think: boolean | "high" | "medium" | "low";
   private schema?: JSONSchema.BaseSchema;
   private source?: string;
   private stop: string[];
@@ -22,6 +23,7 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
     this.id = crypto.randomUUID();
     this.images = [];
     this.stop = [];
+    this._think = false;
   }
 
   setConfig(config: Partial<OllamaSchemaParams>, merge = false) {
@@ -29,6 +31,11 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
       merge ? { ...this.config, ...config } : config,
     );
     this.config = { ...this.config, ...parsed } as T;
+    return this;
+  }
+
+  think(think: boolean | "high" | "medium" | "low") {
+    this._think = think;
     return this;
   }
 
@@ -59,6 +66,7 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
       ...config,
       stream: this.config.stream ?? false,
       format: this.schema,
+      think: this._think,
       messages: [
         ...message,
         {
