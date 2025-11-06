@@ -7,7 +7,7 @@
 // utils type
 // json
 
-import { ChatResponse } from "ollama";
+import { ChatRequest, ChatResponse } from "ollama";
 import {
   OllamaSchemaParams,
   PromptInstance,
@@ -118,11 +118,37 @@ export const pipe = async (
       response = await prompt?.addSource(sourceValue.data).call();
     } else if (sourceValue.type === "image") {
       response = await prompt?.addImage(sourceValue.data).call();
-    } else if (sourceValue.type === "video") {
+    } else {
       throw new Error("test");
     }
 
     sourceValue = response?.message.content || "";
     return response;
   }
+};
+
+export const memo = (system?: PromptInstance) => {
+  let history: (ChatResponse | any)[] = [];
+
+  async function add(
+    prompt: PromptInstance,
+    history: ChatRequest[],
+  ): Promise<ChatResponse> {
+    const userMessage = prompt.createMessage();
+    if (userMessage && userMessage.messages) {
+      history.push(userMessage.messages[0] as any);
+    }
+    const data = await (prompt as any)._callWithHistory(history);
+    history.push(data.message);
+    return data;
+  }
+
+  return {
+    async ask(prompt: PromptInstance) {
+      return add(prompt, history);
+    },
+    list(): ChatResponse[] {
+      return history;
+    },
+  };
 };

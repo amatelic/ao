@@ -1,4 +1,4 @@
-import ollama, { ChatRequest } from "ollama";
+import ollama, { ChatRequest, Message } from "ollama";
 import {
   ChatReturnType,
   OllamaOptionsSchema,
@@ -55,14 +55,14 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
     }
     return this;
   }
-  // })
-  async call(): Promise<ChatReturnType<T>> {
-    const message = this.source ? [{ role: "user", content: this.source }] : [];
 
+  createMessage(): ChatRequest {
+    const message = this.source ? [{ role: "user", content: this.source }] : [];
     let config = Object.assign({}, this.config, {
       options: { stop: this.stop },
     });
-    const configMessage: ChatRequest = {
+
+    return {
       ...config,
       stream: this.config.stream ?? false,
       format: this.schema,
@@ -76,7 +76,40 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
         },
       ],
     };
+  }
+  // })
+  private async _callWithHistory(
+    messages: Message[],
+  ): Promise<ChatReturnType<T>> {
+    let config = Object.assign({}, this.config, {
+      options: { stop: this.stop },
+    });
 
+    const configMessage = {
+      ...config,
+      stream: this.config.stream ?? false,
+      format: this.schema,
+      think: this._think,
+      messages: messages,
+    };
+    // Runtime dispatch based on stream value
+    if (configMessage.stream) {
+      const result = await ollama.chat({
+        ...configMessage,
+        stream: true,
+      });
+      return result as ChatReturnType<T>;
+    } else {
+      const result = await ollama.chat({
+        ...configMessage,
+        stream: false,
+      });
+      return result as ChatReturnType<T>;
+    }
+  }
+
+  async call(): Promise<ChatReturnType<T>> {
+    const configMessage = this.createMessage();
     // Runtime dispatch based on stream value
     if (configMessage.stream) {
       const result = await ollama.chat({
