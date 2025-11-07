@@ -130,6 +130,16 @@ export const pipe = async (
 export const memo = (system?: PromptInstance) => {
   let history: (ChatResponse | any)[] = [];
 
+  if (system) {
+    const userMessage = system.createMessage();
+    const message = userMessage.messages;
+
+    if (message && message[0]) {
+      message[0].role = "system";
+      history.push(message[0]);
+    }
+  }
+
   async function add(
     prompt: PromptInstance,
     history: ChatRequest[],
@@ -147,6 +157,14 @@ export const memo = (system?: PromptInstance) => {
     async ask(prompt: PromptInstance) {
       return add(prompt, history);
     },
+
+    addMemory(prompt: PromptInstance) {
+      const userMessage = prompt.createMessage();
+      if (userMessage && userMessage.messages) {
+        history.push(userMessage.messages[0] as any);
+      }
+    },
+
     list(): ChatResponse[] {
       return history;
     },
