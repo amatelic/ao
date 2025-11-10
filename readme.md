@@ -78,7 +78,20 @@ const response = await weatherToolPrompt(
 console.log(response.message.content) // "New York"
 ```
 
+## Ollamasearch
 
+
+when accesing ollama search you need to provide the ollama api key for it to work.
+You can generate the key at [ollama.ai](https://ollama.com/settings/keys)
+
+```
+OLLAMA_KEY=91111...
+```
 ## Learning resources
+
+- How do i improve the momory functionality
+  - Should i on every interaction store the data and optimize the response with an llm.
+    - 5 answers -> LMM please make the answers more compact??
+
 
 - [Template literals (Template strings)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)

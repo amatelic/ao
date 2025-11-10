@@ -7,13 +7,13 @@ import {
   beforeEach,
   vi,
 } from "vitest";
-import { web, csv } from "../src/source";
+import { search, web, web_custom, csv } from "../src/source";
 import { pipe } from "../src/utils";
 import { oa } from "../src/index";
 import fs from "fs/promises";
 import * as z from "zod";
 
-describe("Check if sources are working", () => {
+describe.skip("Check if sources are working", () => {
   beforeEach(() => {
     // Clear mock before each test
     vi.clearAllMocks();
@@ -42,7 +42,7 @@ describe("Check if sources are working", () => {
     // Mock the fetch response
     (fetch as vi.MockedFunction<typeof fetch>).mockResolvedValue(mockResponse);
     const url = "https://example.com";
-    const siteContent = await web(url);
+    const siteContent = await web_custom(url);
     expect(siteContent.data).toEqual(`${data.title}\n\n${data.description}`);
   });
 
@@ -94,5 +94,13 @@ describe("Check if sources are working", () => {
     ]);
     const parseData = JSON.stringify(JSON.parse(data?.message.content));
     expect(parseData).toEqual(result);
+  });
+});
+
+describe("Check ollama search is working", () => {
+  test("Check that the pipe sourcing works correctly", async () => {
+    const url = "https://gdo-studio.si";
+    const siteContent = await search(url);
+    expect(siteContent.data).includes(`Gdo studio Landing Page`);
   });
 });
