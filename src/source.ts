@@ -30,10 +30,7 @@ export const search = async (
     });
 };
 
-export const web = async (
-  query: string,
-  maxResults = 5,
-): Promise<SourceResult> => {
+export const web = async (query: string): Promise<SourceResult> => {
   if (!process.env.ollama_api_key) {
     throw new Error("ollama_api_key key not found");
   }
@@ -44,7 +41,9 @@ export const web = async (
       "User-Agent": "Gdo studio/1.0",
     },
   })
-    .webFetch(query)
+    .webFetch({
+      url: query,
+    })
     .then((response) => {
       return {
         type: "text",

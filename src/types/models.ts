@@ -1,6 +1,18 @@
 import { z } from "zod";
 
 export const ollama_models = [
+  // cloud options
+  "glm-4.6",
+  "kimi-k2:1t",
+  "kimi-k2-thinking",
+  "qwen3-coder:480b",
+  "deepseek-v3.1:671b",
+  "gpt-oss:120b",
+  "gpt-oss:20b",
+  "qwen3-vl:235b-instruct",
+  "qwen3-vl:235b",
+  "minimax-m2",
+
   "llama2",
   "llama2:7b",
   "llama2:13b",
@@ -117,7 +129,6 @@ export const ollama_models = [
   "stable-beluga:7b",
   "stable-beluga:13b",
   "ultralytics/ultralytics",
-
 
   "gemma3",
 
