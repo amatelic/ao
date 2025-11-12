@@ -68,7 +68,7 @@ export const ollama_models = [
 
   "qwen3:0.6b",
   "qwen3:1.7b",
-  "qwen3:4",
+  "qwen3:4b",
   "qwen3:8b",
   "qwen3:16b",
   "qwen3:30b",

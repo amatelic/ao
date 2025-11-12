@@ -16,6 +16,8 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
   private schema?: JSONSchema.BaseSchema;
   private source?: string;
   private stop: string[];
+  private prefix: string = "";
+  private postfix: string = "";
 
   constructor(prompt: string, config: T) {
     this.prompt = prompt;
@@ -56,8 +58,29 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
     return this;
   }
 
+  addPrefix(prefix: string) {
+    this.prefix = `${prefix} `;
+    return this;
+  }
+
+  setPrompt(prompt: string) {
+    this.prompt = prompt;
+    return this;
+  }
+
+  addPostfix(prefix: string) {
+    this.postfix = `${prefix} `;
+    return this;
+  }
   createMessage(): ChatRequest {
-    const message = this.source ? [{ role: "user", content: this.source }] : [];
+    const message = this.source
+      ? [
+          {
+            role: "user",
+            content: this.source,
+          },
+        ]
+      : [];
     let config = Object.assign({}, this.config, {
       options: { stop: this.stop },
     });
@@ -71,7 +94,7 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
         ...message,
         {
           role: "user",
-          content: this.prompt,
+          content: `${this.prefix}${this.prompt}${this.postfix}`,
           images: this.images.length > 0 ? (this.images as any) : undefined,
         },
       ],
@@ -114,12 +137,14 @@ export class Prompt<T extends { stream?: boolean; model: string }> {
     if (configMessage.stream) {
       const result = await ollama.chat({
         ...configMessage,
+        think: false,
         stream: true,
       });
       return result as ChatReturnType<T>;
     } else {
       const result = await ollama.chat({
         ...configMessage,
+        think: false,
         stream: false,
       });
       return result as ChatReturnType<T>;

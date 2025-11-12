@@ -60,3 +60,30 @@ describe("Check case for prompts", () => {
     expect(withStopFunction.message.content).contains("1 2 3 4 5");
   });
 });
+
+describe("Check prefix examples", async () => {
+  const { prompt } = await oa({
+    model: "qwen3:4b",
+    stream: false,
+    config: {
+      options: {
+        num_ctx: 512,
+        temperature: 0,
+      },
+    },
+  });
+
+  test("Check that prefix is working", async () => {
+    const oraPrompt = prompt("What is 1 + 1")
+      .think(false)
+      .addPrefix(
+        "All your  response should always finish with the ora ora from the jojo series",
+      );
+    const response = await oraPrompt.call();
+    expect(response.message.content).includes("ora ora");
+
+    const response2 = await oraPrompt.setPrompt("Give me a joke").call();
+    console.log(response2.message.content);
+    expect(response2.message.content).includes("ora ora");
+  });
+});
