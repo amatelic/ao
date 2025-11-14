@@ -1,6 +1,6 @@
 {
   "name": "@amatelic/oa",
-  "version": "0.0.2",
+  "version": "0.0.201",
   "description": "Basic libary for creating llm agents",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

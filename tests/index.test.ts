@@ -37,7 +37,7 @@ class UtilTestingServer {
 const config = {
   model: "qwen2.5-coder:7b",
   stream: true,
-};
+} as const;
 
 describe("Make basi ai example", () => {
   test("should fail to connect", async () => {

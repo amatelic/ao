@@ -13,7 +13,7 @@ import { oa } from "../src/index";
 import fs from "fs/promises";
 import * as z from "zod";
 
-describe.skip("Check if sources are working", () => {
+describe("Check if sources are working", () => {
   beforeEach(() => {
     // Clear mock before each test
     vi.clearAllMocks();
@@ -98,9 +98,20 @@ describe.skip("Check if sources are working", () => {
 });
 
 describe("Check ollama search is working", () => {
-  test("Check that the pipe sourcing works correctly", async () => {
+  test("Check if source is working", async () => {
+    const { prompt } = await oa({
+      model: "qwen2.5-coder:7b",
+      stream: false,
+    });
     const url = "https://gdo-studio.si";
-    const siteContent = await search(url);
-    expect(siteContent.data).includes(`Gdo studio Landing Page`);
+    const data = await pipe(search(url), [
+      prompt("Summarize the content of the website in a few words."),
+    ]);
+    expect(data).not.toBeNull();
+  });
+  test("Check that the pipe sourcing throws a error", async () => {
+    const url = "https://gdo-studio.si";
+    vi.stubEnv("OLLAMA_API_KEY", "");
+    await expect(search(url)).rejects.toThrowError();
   });
 });

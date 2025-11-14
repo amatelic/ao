@@ -16,6 +16,8 @@ describe("Check if formating is working", () => {
         .string()
         .describe("Short history of the life of the president"),
     });
+    
+    type President = z.infer<typeof schema>;
 
     const data = await prompt(
       "Tell me who is the 45 president of the united state",
@@ -23,6 +25,9 @@ describe("Check if formating is working", () => {
       .format(schema)
       .call();
 
-    console.log(data.message.content);
+      const presidentData = JSON.parse(data.message.content) as President
+      expect(presidentData.born).not.undefined
+      expect(presidentData.description).not.undefined
+      expect(presidentData.name).not.undefined
   });
 });

@@ -8,13 +8,13 @@ export const search = async (
   query: string,
   maxResults = 5,
 ): Promise<SourceResult> => {
-  if (!process.env.ollama_api_key) {
-    throw new Error("ollama_api_key key not found");
+  if (!process.env.OLLAMA_API_KEY) {
+    throw new Error("OLLAMA_API_KEY key not found");
   }
   return new Ollama({
-    host: process.env.ollama_host || "http://127.0.0.1:11434",
+    host: process.env.OLLAMA_HOST || "http://127.0.0.1:11434",
     headers: {
-      Authorization: `Bearer ${process.env.ollama_api_key}`,
+      Authorization: `Bearer ${process.env.OLLAMA_API_KEY}`,
       "User-Agent": "Gdo studio/1.0",
     },
   })
@@ -31,13 +31,13 @@ export const search = async (
 };
 
 export const web = async (query: string): Promise<SourceResult> => {
-  if (!process.env.ollama_api_key) {
-    throw new Error("ollama_api_key key not found");
+  if (!process.env.OLLAMA_API_KEY) {
+    throw new Error("OLLAMA_API_KEY key not found");
   }
   return new Ollama({
     host: process.env.ollama_host || "http://127.0.0.1:11434",
     headers: {
-      Authorization: `Bearer ${process.env.ollama_api_key}`,
+      Authorization: `Bearer ${process.env.OLLAMA_API_KEY}`,
       "User-Agent": "Gdo studio/1.0",
     },
   })

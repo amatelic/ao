@@ -1,7 +1,6 @@
 # OA
 
-This is a libary for easier construction of LLM prompts with ollama.
-The libary has some utility function which help with the construction of different prompts
+ Libary for easier construction interaction with ollama. 
 
 ## Basic prompt with the libary
 
@@ -78,8 +77,18 @@ const response = await weatherToolPrompt(
 console.log(response.message.content) // "New York"
 ```
 
-## Ollamasearch
+## Source
 
+This are utility functions for importing data to prompts.
+
+right now we support this sources
+
+- search (get multiple links related to the query uses ollama api)
+- web (get single webstei with ollama api)
+- csv (support for importing csv file to prompts)
+- generateText (helper function for generating random text)
+
+## Ollamasearch
 
 when accesing ollama search you need to provide the ollama api key for it to work.
 You can generate the key at [ollama.ai](https://ollama.com/settings/keys)
@@ -87,6 +96,8 @@ You can generate the key at [ollama.ai](https://ollama.com/settings/keys)
 ```
 OLLAMA_KEY=91111...
 ```
+
+
 ## Learning resources
 
 - How do i improve the momory functionality

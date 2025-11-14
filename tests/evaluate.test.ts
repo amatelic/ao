@@ -62,8 +62,6 @@ describe("Evaluate the performance of a model", () => {
 
     const data = JSON.parse(response.message.content) as SummaryOptions;
 
-    console.log(data);
-
     expect(data.summaries.length).toBe(3);
   });
 });
