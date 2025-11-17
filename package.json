@@ -13,7 +13,8 @@
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "publish": "npm publish --access public"
   },
   "keywords": [
     "ai",

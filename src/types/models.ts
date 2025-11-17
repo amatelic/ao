@@ -13,6 +13,7 @@ export const ollama_models = [
   "qwen3-vl:235b",
   "minimax-m2",
 
+  // other modules
   "llama2",
   "llama2:7b",
   "llama2:13b",

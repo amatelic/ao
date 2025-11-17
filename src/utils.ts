@@ -127,6 +127,28 @@ export const pipe = async (
   }
 };
 
+export const parallel = async (
+  source: Promise<SourceResult>,
+  prompts: PromptInstance[],
+): Promise<ChatResponse[]> => {
+  let sourceValue = await source;
+  return await Promise.all(
+    prompts.map(async (prompt) => {
+      let response: any;
+      if (sourceValue.type === "text") {
+        response = await prompt?.addSource(sourceValue.data).call();
+      } else if (sourceValue.type === "image") {
+        response = await prompt?.addImage(sourceValue.data).call();
+      } else {
+        throw new Error("Media type not supported");
+      }
+
+      sourceValue = response?.message.content || "";
+      return response;
+    }),
+  );
+};
+
 export const memo = (system?: PromptInstance) => {
   let history: (ChatResponse | any)[] = [];
 

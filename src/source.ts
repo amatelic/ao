@@ -4,6 +4,11 @@ import { SourceResult } from "./utils";
 import { PromptInstance } from "./types/types";
 import { Ollama } from "ollama";
 
+export const isNode =
+  typeof process !== "undefined" &&
+  process.versions != null &&
+  process.versions.node != null;
+
 export const search = async (
   query: string,
   maxResults = 5,
@@ -100,5 +105,20 @@ export async function generateText(
   return {
     type: "text",
     data: response.message.content,
+  };
+}
+
+export async function file(filePath: string): Promise<SourceResult> {
+  if (!isNode) {
+    throw new Error("File loading is only supported in Node.js");
+  }
+
+  const fs = await import("fs/promises");
+
+  const response = await fs.readFile(filePath, "utf8");
+
+  return {
+    type: "text",
+    data: response,
   };
 }
